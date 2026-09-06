@@ -3,15 +3,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from typing import List
 
-from db.database import get_db
-from db.models import QualityRule, InspectionParameter, AlertRule, SystemSetting
-from db.schemas import (
+from backend.db.database import get_db
+from backend.db.models import QualityRule, InspectionParameter, AlertRule, SystemSetting
+from backend.db.schemas import (
     QualityRuleCreate, QualityRuleResponse,
     InspectionParameterBase, InspectionParameterResponse,
     AlertRuleCreate, AlertRuleResponse,
     SystemSettingBase, SystemSettingResponse
 )
-from api.auth import check_role
+from backend.api.auth import check_role
 
 router = APIRouter(prefix="/api/rules", tags=["Rules & Configurations"])
 

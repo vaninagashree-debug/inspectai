@@ -12,9 +12,9 @@ import cv2
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from db.database import get_db, AsyncSessionLocal
-from db.models import Inspection, ModelRegistry, QualityRule, Dataset
-from db.schemas import InspectionResponse
+from backend.db.database import get_db, AsyncSessionLocal
+from backend.db.models import Inspection, ModelRegistry, QualityRule, Dataset
+from backend.db.schemas import InspectionResponse
 from cv_engine.cv_processor import CVProcessor
 from ml_engine.models import DynamicClassifier, DynamicDetector, DynamicSegmenter, DynamicAnomalyDetector
 from ml_engine.explainer import Explainer
@@ -352,7 +352,7 @@ async def run_inspection_pipeline(image_path: str, db: AsyncSession, inspector_i
     return db_inspection
 
 
-from api.auth import get_current_user
+from backend.api.auth import get_current_user
 
 @router.post("/upload", response_model=InspectionResponse)
 async def upload_inspection(

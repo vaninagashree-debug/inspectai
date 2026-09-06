@@ -5,8 +5,8 @@ from sqlalchemy import func
 from datetime import datetime, timedelta, timezone
 import os
 
-from db.database import get_db
-from db.models import Inspection, ModelRegistry, Dataset
+from backend.db.database import get_db
+from backend.db.models import Inspection, ModelRegistry, Dataset
 
 router = APIRouter(prefix="/api/analytics", tags=["Analytics"])
 

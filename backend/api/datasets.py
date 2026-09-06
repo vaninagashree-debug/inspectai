@@ -8,14 +8,14 @@ import json
 from PIL import Image
 from typing import List
 
-from db.database import get_db
-from db.models import Dataset, ModelRegistry
-from db.schemas import DatasetResponse
-from api.auth import check_role
-
-router = APIRouter(prefix="/api/datasets", tags=["Datasets"])
+from backend.db.database import get_db
+from backend.db.models import Dataset
+from backend.db.schemas import DatasetResponse
+from backend.api.auth import check_role
 
 DATASETS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "datasets"))
+
+router = APIRouter(prefix="/api/datasets", tags=["Datasets"])
 
 @router.post("/upload", response_model=DatasetResponse)
 async def upload_dataset(

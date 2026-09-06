@@ -7,9 +7,9 @@ import bcrypt
 from datetime import datetime, timedelta, timezone
 from typing import List, Optional
 
-from db.database import get_db
-from db.models import User
-from db.schemas import UserCreate, UserResponse, Token
+from backend.db.database import get_db
+from backend.db.models import User
+from backend.db.schemas import UserCreate, UserResponse, Token
 
 # JWT configuration
 SECRET_KEY = "visionguard_enterprise_super_secret_key"

@@ -1,13 +1,10 @@
 import unittest
 from fastapi.testclient import TestClient
-import sys
-import os
 import json
 
 import asyncio
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "backend")))
-from main import app, seed_database
-from db.database import engine, Base
+from backend.main import app, seed_database
+from backend.db.database import engine, Base
 
 async def init_db():
     async with engine.begin() as conn:

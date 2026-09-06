@@ -7,9 +7,9 @@ import pandas as pd
 import os
 import io
 
-from db.database import get_db
-from db.models import Inspection
-from api.auth import check_role
+from backend.db.database import get_db
+from backend.db.models import Inspection
+from backend.api.auth import check_role
 
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
@@ -91,7 +91,7 @@ async def export_excel(
     )
 
 
-from api.auth import check_role, get_current_user
+from backend.api.auth import check_role, get_current_user
 
 @router.get("/pdf/{inspection_id}")
 async def export_pdf_single(

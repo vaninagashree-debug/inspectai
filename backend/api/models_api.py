@@ -10,10 +10,10 @@ from typing import List
 # Add ml_engine and cv_engine to python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from db.database import get_db
-from db.models import ModelRegistry, Dataset
-from db.schemas import ModelResponse, ModelProductionUpdate
-from api.auth import check_role
+from backend.db.database import get_db
+from backend.db.models import ModelRegistry, Dataset
+from backend.db.schemas import ModelResponse, ModelProductionUpdate
+from backend.api.auth import check_role
 from ml_engine.trainer import DynamicTrainer
 
 router = APIRouter(prefix="/api/models", tags=["Models"])
@@ -227,7 +227,7 @@ async def train_model(
     }
     
     # Spawn background thread for training
-    from db.database import AsyncSessionLocal
+    from backend.db.database import AsyncSessionLocal
     thread = threading.Thread(
         target=run_background_training,
         args=(

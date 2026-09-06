@@ -7,17 +7,24 @@ import asyncio
 
 # Ensure project root is in sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-from db.database import engine, Base, AsyncSessionLocal
-from db.models import User, QualityRule, SystemSetting, InspectionParameter
-from api.auth import get_password_hash
-from api.auth import router as auth_router
-from api.datasets import router as datasets_router
-from api.models_api import router as models_router
-from api.rules import router as rules_router
-from api.inspections import router as inspections_router, monitor_folder_task
-from api.analytics import router as analytics_router
-from api.reports import router as reports_router
+from backend.db.database import AsyncSessionLocal, Base, engine, get_db
+from backend.db.models import (
+    Dataset,
+    Inspection,
+    InspectionParameter,
+    ModelRegistry,
+    QualityRule,
+    SystemSetting,
+    User,
+)
+from backend.db.schemas import UserCreate, UserResponse, Token
+from backend.api.auth import get_password_hash, router as auth_router
+from backend.api.datasets import router as datasets_router
+from backend.api.models_api import router as models_router
+from backend.api.rules import router as rules_router
+from backend.api.inspections import router as inspections_router, monitor_folder_task
+from backend.api.analytics import router as analytics_router
+from backend.api.reports import router as reports_router
 
 from contextlib import asynccontextmanager
 
@@ -79,7 +86,6 @@ app.include_router(reports_router)
 async def seed_database():
     async with AsyncSessionLocal() as session:
         from sqlalchemy.future import select
-        from db.models import Dataset, ModelRegistry, Inspection
         res = await session.execute(select(User).limit(1))
         if res.scalars().first() is None:
             # 1. Seed Users
