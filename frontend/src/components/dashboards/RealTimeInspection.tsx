@@ -44,7 +44,7 @@ export default function RealTimeInspection({ token, recentInspections, onNewInsp
     if (recentInspections.length > 0 && !activeInspection) {
       setActiveInspection(recentInspections[0])
     }
-  }, [recentInspections])
+  }, [activeInspection, recentInspections])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {

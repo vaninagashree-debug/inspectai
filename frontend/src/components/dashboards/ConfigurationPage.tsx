@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Plus } from 'lucide-react'
 
 interface QualityRule {
@@ -47,7 +47,7 @@ export default function ConfigurationPage({ token, role }: ConfigurationPageProp
   const [msg, setMsg] = useState('')
   const [error, setError] = useState('')
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const headers = { 'Authorization': `Bearer ${token}` }
       
@@ -61,11 +61,11 @@ export default function ConfigurationPage({ token, role }: ConfigurationPageProp
     } catch (e) {
       console.error(e)
     }
-  }
+  }, [token])
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [fetchData])
 
   const handleCreateRule = async (e: React.FormEvent) => {
     e.preventDefault()

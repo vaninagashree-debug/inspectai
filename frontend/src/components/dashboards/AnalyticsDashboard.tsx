@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Award } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 
@@ -21,7 +21,7 @@ export default function AnalyticsDashboard({ token }: AnalyticsDashboardProps) {
   const [models, setModels] = useState<Model[]>([])
   const [activeModel, setActiveModel] = useState<Model | null>(null)
 
-  const fetchModels = async () => {
+  const fetchModels = useCallback(async () => {
     try {
       const res = await fetch('/api/models', {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -35,11 +35,11 @@ export default function AnalyticsDashboard({ token }: AnalyticsDashboardProps) {
     } catch (e) {
       console.error(e)
     }
-  }
+  }, [token])
 
   useEffect(() => {
     fetchModels()
-  }, [])
+  }, [fetchModels])
 
   const rocData = activeModel?.metrics?.roc_curve || []
   const prData = activeModel?.metrics?.pr_curve || []

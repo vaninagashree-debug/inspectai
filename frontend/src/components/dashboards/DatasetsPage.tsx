@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Database, Upload, Trash2, Play } from 'lucide-react'
 
 interface Dataset {
@@ -31,7 +31,7 @@ export default function DatasetsPage({ token, role, onStartTraining }: DatasetsP
   const [msg, setMsg] = useState('')
   const [error, setError] = useState('')
 
-  const fetchDatasets = async () => {
+  const fetchDatasets = useCallback(async () => {
     try {
       const res = await fetch('/api/datasets', {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -43,11 +43,11 @@ export default function DatasetsPage({ token, role, onStartTraining }: DatasetsP
     } catch (e) {
       console.error(e)
     }
-  }
+  }, [token])
 
   useEffect(() => {
     fetchDatasets()
-  }, [])
+  }, [fetchDatasets])
 
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault()

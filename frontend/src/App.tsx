@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { 
   Shield, BarChart2, Cpu, Settings2, Activity, Play, 
   Layers, HardDrive, Database, ShieldCheck, LogOut 
@@ -70,7 +70,7 @@ export default function App() {
   }
 
   // Fetch summary and logs
-  const fetchSummaryData = async () => {
+  const fetchSummaryData = useCallback(async () => {
     if (!token) return
     try {
       const headers = { 'Authorization': `Bearer ${token}` }
@@ -83,16 +83,16 @@ export default function App() {
       if (inspRes.ok) setRecentInspections(await inspRes.json())
       
       setServerOnline(true)
-    } catch (e) {
+    } catch {
       setServerOnline(false)
     }
-  }
+  }, [token])
 
   useEffect(() => {
     if (token) {
       fetchSummaryData()
     }
-  }, [token])
+  }, [fetchSummaryData, token])
 
   // Establish WebSockets Connection
   useEffect(() => {
@@ -131,7 +131,7 @@ export default function App() {
       if (socket) socket.close()
       if (reconnectTimeout) clearTimeout(reconnectTimeout)
     }
-  }, [token])
+  }, [fetchSummaryData, token])
 
   if (!token) {
     return <AuthScreen onLoginSuccess={handleLoginSuccess} />

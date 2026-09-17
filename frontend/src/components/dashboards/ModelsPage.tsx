@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Cpu, Award, RotateCw, Trash2, Power } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 
@@ -39,7 +39,7 @@ export default function ModelsPage({ token, role, trainingTrigger, onClearTraini
   const [trainingStatus, setTrainingStatus] = useState<any>(null)
   const [activeTrainingId, setActiveTrainingId] = useState<number | null>(null)
 
-  const fetchModels = async () => {
+  const fetchModels = useCallback(async () => {
     try {
       const res = await fetch('/api/models', {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -57,9 +57,9 @@ export default function ModelsPage({ token, role, trainingTrigger, onClearTraini
     } catch (e) {
       console.error(e)
     }
-  }
+  }, [token])
 
-  const triggerTraining = async (datasetId: number, name: string) => {
+  const triggerTraining = useCallback(async (datasetId: number, name: string) => {
     try {
       const res = await fetch(`/api/models/train?dataset_id=${datasetId}&name=${name}`, {
         method: 'POST',
@@ -78,17 +78,17 @@ export default function ModelsPage({ token, role, trainingTrigger, onClearTraini
     } finally {
       onClearTrainingTrigger()
     }
-  }
+  }, [fetchModels, onClearTrainingTrigger, token])
 
   useEffect(() => {
     fetchModels()
-  }, [])
+  }, [fetchModels])
 
   useEffect(() => {
     if (trainingTrigger) {
       triggerTraining(trainingTrigger.datasetId, trainingTrigger.name)
     }
-  }, [trainingTrigger])
+  }, [trainingTrigger, triggerTraining])
 
   useEffect(() => {
     if (activeTrainingId === null) return
@@ -111,7 +111,7 @@ export default function ModelsPage({ token, role, trainingTrigger, onClearTraini
       }
     }, 2500)
     return () => clearInterval(interval)
-  }, [activeTrainingId])
+  }, [activeTrainingId, fetchModels, token])
 
   const handleToggleProduction = async (model: Model) => {
     const isProd = !model.is_production

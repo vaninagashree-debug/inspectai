@@ -126,7 +126,8 @@ async def upload_dataset(
 
     # For segmentation, find class names (default background and foreground/defects)
     if task_type == "segmentation":
-        classes = ["background", "defect"]
+        classes.clear()
+        classes.update(["background", "defect"])
 
     # Calculate average resolution
     avg_w = sum(r[0] for r in resolutions) // len(resolutions) if resolutions else 224

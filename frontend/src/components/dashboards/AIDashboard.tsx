@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Settings, Award } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 
@@ -34,7 +34,7 @@ export default function AIDashboard({ token }: AIDashboardProps) {
   const [models, setModels] = useState<Model[]>([])
   const [activeModel, setActiveModel] = useState<Model | null>(null)
 
-  const fetchModels = async () => {
+  const fetchModels = useCallback(async () => {
     try {
       const res = await fetch('/api/models', {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -48,11 +48,11 @@ export default function AIDashboard({ token }: AIDashboardProps) {
     } catch (e) {
       console.error(e)
     }
-  }
+  }, [token])
 
   useEffect(() => {
     fetchModels()
-  }, [])
+  }, [fetchModels])
 
   const historyData = activeModel?.metrics?.history?.train_loss?.map((loss, idx) => ({
     epoch: idx + 1,
