@@ -12,3 +12,16 @@ dependencies = [
     "pydantic",
     "python-multipart"
 ]
+[project]
+name = "inspectai"
+version = "1.0.0"
+requires-python = ">=3.12"
+
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "pydantic",
+    "python-multipart",
+    "sqlalchemy",
+    "requests"
+]
